@@ -1,28 +1,36 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
+    <Login v-if="current == 'login'" :users="users" :message='message'/>
+    <Register v-else :users="users" :message='message'/>
+	{{message}}
+	<br>
+	<button @click="toggle('register')">register</button>
+	<button @click="toggle('login')">login</button>
   </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld'
-
+import Login from './components/Login'
+import Register from './components/Register'
 export default {
   name: 'App',
+  data(){
+	  return {
+		current: 'login',
+		users: [],			
+		message: ''
+	  }
+  },
   components: {
-    HelloWorld
+    Login,
+	Register
+  },
+  methods: {
+	  toggle(value){
+		this.current = value
+		this.message = ''
+	  }
   }
 }
 </script>
-
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
