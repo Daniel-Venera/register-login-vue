@@ -1,28 +1,39 @@
 <template>
   <div id="app">
-    <Login v-if="current == 'login'" :users="users" :message='message'/>
-    <Register v-else :users="users" :message='message'/>
-	{{message}}
+	<h1 class="title">{{current}}</h1>
+	<div v-if='message' class="message">
+		<span class="message__text" :class="{'message__text--error': isMessageError}">{{message}}</span>
+	</div>
+    <Login v-if="current == 'Log In'" />
+    <Register v-if="current == 'Register'" />
+    <!-- <Account v-if="current == 'Account'" /> -->
 	<br>
-	<button @click="toggle('register')">register</button>
-	<button @click="toggle('login')">login</button>
+	<div v-if="current == 'Register'">
+		<span >You already have an account ? <a class="link" @click="toggle('Log In')">Log In</a></span>	
+	</div>
+	<div  v-if="current == 'Log In'">
+		<span><a class="link" @click="toggle('Register')">Register</a></span>
+	</div>
   </div>
 </template>
 <script>
 import Login from './components/Login'
 import Register from './components/Register'
+// import Account from './components/Account'
 export default {
   name: 'App',
   data(){
 	  return {
-		current: 'login',
+		current: 'Register',
 		users: [],			
-		message: ''
+		message: '',
+		isMessageError: true
 	  }
   },
   components: {
     Login,
-	Register
+	Register,
+	// Account
   },
   methods: {
 	  toggle(value){
@@ -33,4 +44,5 @@ export default {
 }
 </script>
 <style>
+	@import './assets/style.css';
 </style>

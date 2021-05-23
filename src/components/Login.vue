@@ -1,19 +1,20 @@
 <template>
 	<div>
-		<h1>login</h1>
-		<form @submit.prevent="login()">
-			<input type="email" required v-model="email" placeholder="email">
-			<input type="password" required v-model="password" placeholder="password">
-			<button type="submit">Login</button>
+		<form @submit.prevent="login()" class="form">
+			<div class="form__group">
+				<label class="form__label" for="email">Email</label>
+				<input type="email" class="form__input" required v-model="email" >
+			</div>
+			<div class="form__group">
+				<label class="form__label" for="password">Password</label>
+				<input class="form__input" type="password" required v-model="password" >
+			</div>
+			<button type="submit" class="form__btn" :disabled="email == '' || password == ''">Log In</button>
 		</form>
 	</div>
 </template>
 <script>
 export default {
-	props: {
-		users: Array,
-		message: String
-	},
 	data(){
 		return {
 			email: '',
@@ -22,27 +23,30 @@ export default {
 	},
 	methods : {
 		login(){
+			this.$parent.message = ''
 			var self = this
-			let emailOk = false
-			this.users.every(function(e){
+			let emailExists = false
+			let passwordCorrect = false
+			this.$parent.users.forEach(function(e){
 				if (e.email == self.email){
-					emailOk = true					
-				}
-				if (e.email == self.email && e.password == self.password){
-					self.$parent.message = 'Logged !';
-					return false;
-				} else {
-					if (emailOk){
-						self.$parent.message = 'Your password is incorrect'
-					} else {
-						self.$parent.message = 'No account found with this email'
+					emailExists = true;
+					if (e.password == self.password){
+						passwordCorrect = true
+						self.$parent.message = 'Logged !'
+						self.$parent.isMessageError = false
 					}
-				}
+				} 
 			})
+			if (!emailExists){
+				this.$parent.message = 'No account found with this email'
+				this.$parent.isMessageError = true
+			} else if(!passwordCorrect){
+				this.$parent.message = 'Incorrect password'
+				this.$parent.isMessageError = true
+			}
 		}
 	}
 }
 </script>
 <style>
 </style>
-12345678!Lu
